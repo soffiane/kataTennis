@@ -3,8 +3,9 @@ package tennis;
 import java.util.Objects;
 
 public class Score {
-    private static final String[] defaults = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
-    private static final String WIN = "Win for #playerName";
+    private static final String[] scores = new String[]{"Love", "Fifteen", "Thirty", "Forty"};
+    private static final String WIN_GAME = "#playerName wins the game";
+    private static final String WIN_SET = "#playerName wins the match";
     private static final String ADVANTAGE = "Advantage #playerName";
     private static final String DEUCE = "Deuce";
     private static final String ALL = "All";
@@ -12,35 +13,64 @@ public class Score {
     public Score() {
     }
 
-    public static String calculate(Integer playerOnePoint, Integer playerTwoPoint, String playerOneName, String playerTwoName) {
-        if (Objects.equals(playerOnePoint, playerTwoPoint)) return deuce(playerOnePoint);
-        if (playerOnePoint > 3 || playerTwoPoint > 3)
-            return winOrTie(playerOnePoint, playerTwoPoint, playerOneName, playerTwoName);
-        return defaultScore(playerOneName, playerTwoName, playerOnePoint, playerTwoPoint);
+    public static String calculate(Player playerOne, Player playerTwo) {
+        if (Objects.equals(playerOne.getGameScore(), playerTwo.getGameScore())) {
+            return deuce(playerOne.getGameScore());
+        }
+        if (playerOne.getGameScore() > 3 || playerTwo.getGameScore() > 3) {
+            return winOrTie(playerOne, playerTwo);
+        }
+        return gameScore(playerOne, playerTwo);
     }
 
     private static String deuce(Integer playerOnePoint) {
-        if (playerOnePoint < 3) return defaults[playerOnePoint] + " - " + ALL;
+        if (playerOnePoint < 3) {
+            return scores[playerOnePoint] + " - " + ALL;
+        }
         return DEUCE;
     }
 
-    private static String winOrTie(Integer playerOnePoint, Integer playerTwoPoint, String playerOneName, String playerTwoName) {
-        if (Math.abs(playerOnePoint - playerTwoPoint) >= 2)
-            return win(playerOnePoint, playerTwoPoint, playerOneName, playerTwoName);
-        return tie(playerOnePoint, playerTwoPoint, playerOneName, playerTwoName);
+    private static String winOrTie(Player playerOne, Player playerTwo) {
+        return Math.abs(playerOne.getGameScore() - playerTwo.getGameScore()) >= 2 ?
+                winGameOrMatch(playerOne, playerTwo) :
+                tie(playerOne, playerTwo);
     }
 
-    private static String win(Integer playerOnePoint, Integer playerTwoPoint, String playerOneName, String playerTwoName) {
-        if (playerOnePoint > playerTwoPoint) return WIN.replace("#playerName", playerOneName);
-        return WIN.replace("#playerName", playerTwoName);
+    private static String winGameOrMatch(Player playerOne, Player playerTwo) {
+        String score = "";
+        if (playerOne.getGameScore() > playerTwo.getGameScore() && playerOne.getTennisSetScore() < 5) {
+            playerOne.winGame();
+            playerOne.resetScore();
+            playerTwo.resetScore();
+            score = WIN_GAME.replace("#playerName", playerOne.getPlayerName());
+        } else if (playerOne.getGameScore() > playerTwo.getGameScore() && playerOne.getTennisSetScore() == 5) {
+            playerOne.winGame();
+            playerOne.resetScore();
+            playerTwo.resetScore();
+            System.out.println(String.format("Final Score %n%d - %d%n", playerOne.getTennisSetScore(), playerTwo.getTennisSetScore()));
+            score = WIN_SET.replace("#playerName", playerOne.getPlayerName());
+        } else if (playerOne.getGameScore() < playerTwo.getGameScore() && playerTwo.getTennisSetScore() < 5) {
+            playerTwo.winGame();
+            playerOne.resetScore();
+            playerTwo.resetScore();
+            score = WIN_GAME.replace("#playerName", playerTwo.getPlayerName());
+        } else if (playerOne.getGameScore() < playerTwo.getGameScore() && playerTwo.getTennisSetScore() == 5) {
+            playerTwo.winGame();
+            playerOne.resetScore();
+            playerTwo.resetScore();
+            System.out.println(String.format("Final Score %n%d - %d%n", playerOne.getTennisSetScore(), playerTwo.getTennisSetScore()));
+            score = WIN_SET.replace("#playerName", playerTwo.getPlayerName());
+        }
+        return score;
     }
 
-    private static String tie(Integer playerOnePoint, Integer playerTwoPoint, String playerOneName, String playerTwoName) {
-        if (playerOnePoint > playerTwoPoint) return ADVANTAGE.replace("#playerName", playerOneName);
-        return ADVANTAGE.replace("#playerName", playerTwoName);
+    private static String tie(Player playerOne, Player playerTwo) {
+        return playerOne.getGameScore() > playerTwo.getGameScore() ?
+                ADVANTAGE.replace("#playerName", playerOne.getPlayerName()) :
+                ADVANTAGE.replace("#playerName", playerTwo.getPlayerName());
     }
 
-    private static String defaultScore(String playerOneName, String playerTwoName, Integer playerOnePoint, Integer playerTwoPoint) {
-        return playerOneName + defaults[playerOnePoint] + " - " + playerTwoName + defaults[playerTwoPoint];
+    private static String gameScore(Player playerOne, Player playerTwo) {
+        return String.format("Game Score %n%d - %d%n%s %s - %s %s%n", playerOne.getTennisSetScore(), playerTwo.getTennisSetScore(), playerOne.getPlayerName(), scores[playerOne.getGameScore()], playerTwo.getPlayerName(), scores[playerTwo.getGameScore()]);
     }
 }

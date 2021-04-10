@@ -2,26 +2,26 @@ package tennis;
 
 import java.util.Random;
 
+import static tennis.Score.calculate;
+
 public class Game {
-    private final Integer[] rawScore;
-    private final String playerOneName;
-    private final String playerTwoName;
+    private final Player playerOne;
+    private final Player playerTwo;
     private final TennisGamePrinter tennisGamePrinter;
 
     public Game(TennisGamePrinter tennisGamePrinter, String playerOneName, String playerTwoName) {
         this.tennisGamePrinter = tennisGamePrinter;
-        this.playerOneName = playerOneName;
-        this.playerTwoName = playerTwoName;
-        this.rawScore = new Integer[2];
-        this.rawScore[0] = 0;
-        this.rawScore[1] = 0;
+        this.playerOne = new Player(playerOneName,0,0);
+        this.playerTwo = new Player(playerTwoName,0,0);
     }
 
     public void start() {
+        String result = "";
         do {
-            tennisGamePrinter.print("Point " + (this.scoreRandomPoint() == 1 ? playerOneName : playerTwoName));
-            tennisGamePrinter.print(this.getScore());
-        } while (!getScore().startsWith("Win"));
+            tennisGamePrinter.print("Point " + (this.scoreRandomPoint() == 1 ? playerOne.getPlayerName() : playerTwo.getPlayerName()));
+            result = getScore();
+            tennisGamePrinter.print(result);
+        } while (!result.contains("match"));
     }
 
     public Integer scoreRandomPoint() {
@@ -35,10 +35,14 @@ public class Game {
     }
 
     public void scorePoint(Integer playerId) {
-        rawScore[playerId - 1] = rawScore[playerId - 1] + 1;
+        if(playerId == 1){
+            playerOne.setGameScore(playerOne.getGameScore()+1);
+        } else {
+            playerTwo.setGameScore(playerTwo.getGameScore()+1);
+        }
     }
 
     public String getScore() {
-        return Score.calculate(rawScore[0], rawScore[1], playerOneName, playerTwoName);
+        return calculate(playerOne, playerTwo);
     }
 }
