@@ -9,8 +9,10 @@ public class Score {
     private static final String ADVANTAGE = "Advantage #playerName";
     private static final String DEUCE = "Deuce";
     private static final String ALL = "All";
+    private static final String PLAYER_NAME = "#playerName";
 
-    public Score() {
+    private Score(){
+
     }
 
     public static String calculate(Player playerOne, Player playerTwo) {
@@ -42,32 +44,32 @@ public class Score {
             playerOne.winGame();
             playerOne.resetScore();
             playerTwo.resetScore();
-            score = WIN_GAME.replace("#playerName", playerOne.getPlayerName());
+            score = WIN_GAME.replace(PLAYER_NAME, playerOne.getPlayerName());
         } else if (playerOne.getGameScore() > playerTwo.getGameScore() && playerOne.getTennisSetScore() == 5) {
             playerOne.winGame();
             playerOne.resetScore();
             playerTwo.resetScore();
-            System.out.println(String.format("Final Score %n%d - %d%n", playerOne.getTennisSetScore(), playerTwo.getTennisSetScore()));
-            score = WIN_SET.replace("#playerName", playerOne.getPlayerName());
+            System.out.printf("Final Score %n%d - %d%n%n", playerOne.getTennisSetScore(), playerTwo.getTennisSetScore());
+            score = WIN_SET.replace(PLAYER_NAME, playerOne.getPlayerName());
         } else if (playerOne.getGameScore() < playerTwo.getGameScore() && playerTwo.getTennisSetScore() < 5) {
             playerTwo.winGame();
             playerOne.resetScore();
             playerTwo.resetScore();
-            score = WIN_GAME.replace("#playerName", playerTwo.getPlayerName());
+            score = WIN_GAME.replace(PLAYER_NAME, playerTwo.getPlayerName());
         } else if (playerOne.getGameScore() < playerTwo.getGameScore() && playerTwo.getTennisSetScore() == 5) {
             playerTwo.winGame();
             playerOne.resetScore();
             playerTwo.resetScore();
-            System.out.println(String.format("Final Score %n%d - %d%n", playerOne.getTennisSetScore(), playerTwo.getTennisSetScore()));
-            score = WIN_SET.replace("#playerName", playerTwo.getPlayerName());
+            System.out.printf("Final Score %n%d - %d%n%n", playerOne.getTennisSetScore(), playerTwo.getTennisSetScore());
+            score = WIN_SET.replace(PLAYER_NAME, playerTwo.getPlayerName());
         }
         return score;
     }
 
     private static String tie(Player playerOne, Player playerTwo) {
         return playerOne.getGameScore() > playerTwo.getGameScore() ?
-                ADVANTAGE.replace("#playerName", playerOne.getPlayerName()) :
-                ADVANTAGE.replace("#playerName", playerTwo.getPlayerName());
+                ADVANTAGE.replace(PLAYER_NAME, playerOne.getPlayerName()) :
+                ADVANTAGE.replace(PLAYER_NAME, playerTwo.getPlayerName());
     }
 
     private static String gameScore(Player playerOne, Player playerTwo) {

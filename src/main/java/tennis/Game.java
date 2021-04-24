@@ -7,20 +7,18 @@ import static tennis.Score.calculate;
 public class Game {
     private final Player playerOne;
     private final Player playerTwo;
-    private final TennisGamePrinter tennisGamePrinter;
 
-    public Game(TennisGamePrinter tennisGamePrinter, String playerOneName, String playerTwoName) {
-        this.tennisGamePrinter = tennisGamePrinter;
+    public Game(String playerOneName, String playerTwoName) {
         this.playerOne = new Player(playerOneName,0,0);
         this.playerTwo = new Player(playerTwoName,0,0);
     }
 
     public void start() {
-        String result = "";
+        String result;
         do {
-            tennisGamePrinter.print("Point " + (this.scoreRandomPoint() == 1 ? playerOne.getPlayerName() : playerTwo.getPlayerName()));
+            System.out.println("Point " + (this.scoreRandomPoint() == 1 ? playerOne.getPlayerName() : playerTwo.getPlayerName()));
             result = getScore();
-            tennisGamePrinter.print(result);
+            System.out.println(result);
         } while (!result.contains("match"));
     }
 

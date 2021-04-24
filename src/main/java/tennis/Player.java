@@ -2,7 +2,7 @@ package tennis;
 
 public class Player {
 
-    private String playerName;
+    private final String playerName;
     private int gameScore;
     private int tennisSetScore;
 
@@ -37,7 +37,4 @@ public class Player {
         this.gameScore = 0;
     }
 
-    public void scorePoint() {
-        this.gameScore++;
-    }
 }
