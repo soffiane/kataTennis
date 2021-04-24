@@ -13,6 +13,14 @@ public class Game {
         this.playerTwo = new Player(playerTwoName,0,0);
     }
 
+    public Player getPlayerOne() {
+        return playerOne;
+    }
+
+    public Player getPlayerTwo() {
+        return playerTwo;
+    }
+
     public void start() {
         String result;
         do {

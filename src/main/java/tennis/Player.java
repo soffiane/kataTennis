@@ -33,6 +33,10 @@ public class Player {
         this.tennisSetScore++;
     }
 
+    public void winBall() {
+        this.gameScore++;
+    }
+
     public void resetScore() {
         this.gameScore = 0;
     }

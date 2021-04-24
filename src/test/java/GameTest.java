@@ -1,29 +1,33 @@
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tennis.Game;
+import tennis.Player;
+
+import java.util.stream.IntStream;
 
 public class GameTest {
-/*
+
     Player victor;
     Player sarah;
     Game game;
 
-    @Before
+    @BeforeAll
     public void beforeGameTest() {
-        victor = new Player();
-        sarah = new Player();
-        game = new main.java.Game("Victor", "Sarah");
+        game = new Game("Victor", "Sarah");
+        victor = game.getPlayerOne();
+        sarah = game.getPlayerTwo();
     }
 
     @Test
     public void loveShouldBeDescriptionForScore0() {
-        Game game = new Game(victor, sarah);
-        assertThat(game, hasProperty("score", is("love, love")));
+        Assertions.assertEquals(game.getScore(), "love, love");
     }
 
     @Test
     public void fifteenShouldBeDescriptionForScore1() {
         sarah.winBall();
-        assertThat(game, hasProperty("score", is("love, fifteen")));
+        Assertions.assertEquals(game.getScore(), "love, fifteen");
     }
 
     @Test
@@ -31,7 +35,7 @@ public class GameTest {
         victor.winBall();
         victor.winBall();
         sarah.winBall();
-        assertThat(game, hasProperty("score", is("thirty, fifteen")));
+        Assertions.assertEquals(game.getScore(), "thirty, fifteen");
     }
 
     @Test
@@ -39,7 +43,7 @@ public class GameTest {
         IntStream.rangeClosed(1, 3).forEach((Integer) -> {
             victor.winBall();
         });
-        assertThat(game, hasProperty("score", is("forty, love")));
+        Assertions.assertEquals(game.getScore(), "forty, love");
     }
 
     @Test
@@ -50,7 +54,7 @@ public class GameTest {
         IntStream.rangeClosed(1, 4).forEach((Integer) -> {
             sarah.winBall();
         });
-        assertThat(game, hasProperty("score", is("advantage Sarah")));
+        Assertions.assertEquals(game.getScore(), "advantage Sarah");
     }
 
     @Test
@@ -61,11 +65,11 @@ public class GameTest {
         for(int index = 1; index <= 3; index++) {
             sarah.winBall();
         }
-        assertThat(game, hasProperty("score", is("deuce")));
+        Assertions.assertEquals(game.getScore(), "deuce");
         victor.winBall();
-        assertThat(game, hasProperty("score", is(not("deuce"))));
+        Assertions.assertNotEquals(game.getScore(), "deuce");
         sarah.winBall();
-        assertThat(game, hasProperty("score", is("deuce")));
+        Assertions.assertEquals(game.getScore(), "deuce");
     }
 
     @Test
@@ -76,9 +80,9 @@ public class GameTest {
         for(int index = 1; index <= 3; index++) {
             sarah.winBall();
         }
-        assertThat(game, hasProperty("score", is(not("Victor won"))));
-        assertThat(game, hasProperty("score", is(not("Sarah won"))));
+        Assertions.assertNotEquals(game.getScore(), "Victor won");
         victor.winBall();
-        assertThat(game, hasProperty("score", is("Victor won")));
-    }*/
+        Assertions.assertEquals(game.getScore(), "Victor won");
+        Assertions.assertNotEquals(game.getScore(), "Sarah won");
+    }
 }
