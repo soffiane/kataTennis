@@ -41,10 +41,10 @@ public class Game {
     }
 
     public void scorePoint(Integer playerId) {
-        if(playerId == 1){
-            playerOne.setGameScore(playerOne.getGameScore()+1);
+        if (playerId == 1) {
+            playerOne.winBall();
         } else {
-            playerTwo.setGameScore(playerTwo.getGameScore()+1);
+            playerTwo.winBall();
         }
     }
 
